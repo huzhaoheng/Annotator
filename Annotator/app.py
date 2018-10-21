@@ -6,10 +6,11 @@ from flask import Flask, jsonify, render_template, request
 from PIL import Image
 import numpy as np
 import argparse
-# import matlab.engine
+import requests
 from difflib import SequenceMatcher
 from helpers import *
 import cv2
+from flask_cors import CORS
 
 parser = argparse.ArgumentParser(description='Server of Annotator')
 parser.add_argument('-o','--objects', required=False, default='objects.txt',
@@ -33,6 +34,7 @@ classesPath = args.classes
 
 
 app = Flask(__name__)
+CORS(app)
 # eng = matlab.engine.start_matlab()
 # eng.addpath(os.getcwd(),nargout=0)
 
@@ -61,27 +63,17 @@ def getFrames():
 def getImageArray():
 	object_path = json.loads(request.args.get('arg'))['object']
 	frame = json.loads(request.args.get('arg'))['frame']
-	tiff_postfix = ".tiff"
-	imagePath = '/'.join([object_path, frame + tiff_postfix])
 
-	im = cv2.imread(imagePath, cv2.IMREAD_UNCHANGED)
-	shape = im.shape
-	im_rgb = np.ascontiguousarray(im[:,:,:3])
-
-	# maskPath = imagePath + '.bin'
-	# Bytes = np.fromfile(maskPath, dtype="uint8")
-	# Bits = np.unpackbits(Bytes)
-	# tmp = np.fliplr(np.reshape(Bits, [-1,8]))
-	# mask = np.reshape(tmp, [800, 1280])
-	mask = readMask(imagePath+'.bin')
-
-	im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-	cv2.drawContours(im_rgb, contours, -1, (255,0,0), 5)
-
-	imarray_RGBA = np.stack((im_rgb[:,:,0], im_rgb[:,:,1], im_rgb[:,:,2], im[:,:,3]), axis = -1)
-
-	ret = {'height' : shape[0], 'width' : shape[1], 'array' : imarray_RGBA.flatten().tolist()}
-	return jsonify(elements = ret)
+	# url = "http://192.168.1.2:8888/getImageArray"
+	url = "az001.csl.illinois.edu:8889/getImageArray"
+	params = {
+		'object' : object_path,
+		'frame' : frame
+	}
+	r = requests.get(url = url, params = params)
+	data = r.json()['elements']
+	print (sys.getsizeof(data))
+	return jsonify(elements = data)
 
 @app.route('/getAllClasses')
 def getAllClasses():
@@ -142,7 +134,7 @@ def getTopKClasses():
 	classes = [ s[0] for s in similarities[:k] ]
 
 	return jsonify(elements = classes)
-	
+
 
 if __name__ == '__main__':
 	app.debug = False

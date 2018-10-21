@@ -58,8 +58,8 @@ function getFrames() {
 
 function getImageArray() {
 	$.getJSON(
-		//'/getImageArray',
-		'http://67.173.101.247:5000/getImageArray',
+		//'http://192.168.1.2:8888/getImageArray',
+		'/getImageArray',
 		{arg: JSON.stringify({'object' : window.curr_object, 'frame' : window.curr_frame})},
 		function (response){
 			var res = response.elements;

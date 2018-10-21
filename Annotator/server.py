@@ -33,10 +33,13 @@ def getImageArray():
 	return jsonify(elements = ret)
 
 
+
 @app.route('/test')
 def test():
 	print ('test function running')
+	return jsonify(elements = {'message' : 'hello'});
+	
 
 if __name__ == '__main__':
 	app.debug = False
-	app.run(host='0.0.0.0', port=8888)
+	app.run(host='0.0.0.0', port=5000)
