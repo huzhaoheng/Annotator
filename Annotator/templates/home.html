@@ -9,123 +9,41 @@
 
 		<link href="/static/css/style.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.4/css/selectize.css" rel="stylesheet">
 
 		<script src="/static/js/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
 		<script src="/static/js/script.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row outer-row">
 				<div class="col-md-3 to-vertically-center">
 					<h3 id="title">
 						Title of Image
 					</h3>
 				</div>
 				<div class="col-md-6 to-vertically-center">
-					<img/>
+					<canvas id="canvas"></canvas>
 				</div>
 				<div class="col-md-3 to-vertically-center">
-					<button type="button" class="btn btn-success">
-						Next
+					<button type="button" class="btn btn-success" id="next" onclick="nextHandler(true);">
+						Try Another?
 					</button>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row outer-row">
 				<div class="col-md-6">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>
-									#
-								</th>
-								<th>
-									Product
-								</th>
-								<th>
-									Payment Taken
-								</th>
-								<th>
-									Status
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									1
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Default
-								</td>
-							</tr>
-							<tr class="table-active">
-								<td>
-									1
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									01/04/2012
-								</td>
-								<td>
-									Approved
-								</td>
-							</tr>
-							<tr class="table-success">
-								<td>
-									2
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									02/04/2012
-								</td>
-								<td>
-									Declined
-								</td>
-							</tr>
-							<tr class="table-warning">
-								<td>
-									3
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									03/04/2012
-								</td>
-								<td>
-									Pending
-								</td>
-							</tr>
-							<tr class="table-danger">
-								<td>
-									4
-								</td>
-								<td>
-									TB - Monthly
-								</td>
-								<td>
-									04/04/2012
-								</td>
-								<td>
-									Call in to confirm
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="container-fluid" id="classes"></div>
 				</div>
 				<div class="col-md-6">
+					<label for="classSelector">Select/Add Another Class</label>
+					<select id="classSelector" class="demo-default" placeholder="Select Another Class">
+						<option value=""></option>
+					</select>
+					<button class="btn btn-success pull-right" onClick="classSelectionHandler(this, 'selector');">Submit</button>
 				</div>
 			</div>
 		</div>
